@@ -1,0 +1,29 @@
+reduce:
+
+umount /lvm1
+e2fsck -ff /dev/VG0/lv1
+resize2fs /dev/VG0/lv1 100M (with desired size)  || resize2fs /dev/vg_tecmint_extra/tecmint_reduce_test 10GB
+lvreduce -L 100M /dev/VG0/lv1 || lvreduce -L -8G /dev/vg_tecmint_extra/tecmint_reduce_test (-8GB to make to 10 from 18GB)|| lvreduce -l -2048 /dev/vg_tecmint_extra/tecmint_reduce_test (with PE)
+resize2fs /dev/vg_tecmint_extra/tecmint_reduce_test (retest with this for error or anything )
+mount -a (entry in fstab) || mount /dev/vg_tecmint_extra/tecmint_reduce_test /mnt/tecmint_reduce_test/
+
+increase:
+
+fdisk -cu /dev/sda (for partition and 8e label to partition/disk)
+partprobe /dev/sda1 (Inform to the kernel about new partition)
+fdisk -l /dev/sda (list partition)
+pvcreate /dev/sda1
+pvs
+vgextend vg_tecmint /dev/sda1
+vgs
+vgdisplay (to see free PE, default 4MB size of PE)
+lvextend -l +4607 /dev/vg_tecmint/LogVol01
+resize2fs /dev/vg_tecmint/LogVol01
+lvdisplay
+
+Create:
+
+lvcreate -n data -L 5G vg01 || lvcreate -l 160 -n backup vg01 
+lsblk /dev/sdb (see Major/minor) || We can say that Minor number represents a device/partition and major number specify a device driver
+mkfs.ext4 /dev/my_vg/my_lv
+then mount this FS (to make persistent make entry in fstab file)
