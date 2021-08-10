@@ -1,0 +1,73 @@
+########Configuration##########
+
+1. Update  the FQDN in /etc/hosts
+It’s highly recommended to update  /etc/hosts with Acive directory FQDN. If something happens to DNS ,system can still resolve out to it.
+
+
+2. Update the Host name – /etc/sysconfig/network
+where “master” is the RHEL host name and “ADserver “is the ADDS (Active directory domain service) Server name.
+
+3. Update the DNS – /etc/resolve.conf
+Set the system’s search domain and point to the AD DNS server in /etc/resolv.conf
+
+
+4. Synchronise the Time – /etc/ntp.conf
+Its mandatory to have time synchronization between the domain server and its client. To achieve this, edit the ntp server details in the ntp.conf.
+
+5. Update the Samba and krb configuration using authconfig-tui
+Check if necessary packages are installed and backup the below configuration file 
+
+/etc/krb5.conf
+
+/etc/samba/smb.conf
+
+Execute the command authconfig-tui. You will get the below text user interface. Fill in the field as below
+
+
+Once You checked the necessary fields mentioned above, click on Next
+
+Update the Kerberos setting as per your environment and click next.
+
+Modify the Samba settings and click Ok.
+
+#####Verify the configuration#########
+
+Validate and update the additional information on the Kerberos and samba configuration files
+
+Verify /etc/krb5.conf
+
+2.Update /etc/samba/smb.conf for ID management
+
+Update idmap config range as below as well as backend connection as rid. This is to keep      same UID for the users across the domain. Please insert if these lines are not present
+
+3. verify /etc/nsswitch.conf
+
+In order to tell the system to use winbind for authentication, add winbind to passwd and group in /etc/nsswitch.conf as below if it is not already get updated
+
+
+Join the server to the domain
+To join the server in domain, under the specific OU , use the below command
+
+#net ads join createcomputer=Datacenter-FI/Linux_Servers -U <admin id>
+
+Replace the OU names accroding to your environment (Datacenter-Fi/Linux_servers is based on my test environment).You should be having an admin ID created in the AD already to join the computer.
+
+Restart the service
+Once joined to the domain , restart the  winbind service
+
+#systemctl restart winbind
+
+Restrict Access only to a specific AD group
+To restrict access to the server for a specific AD group is possible via editing the file /etc/security/pam_winbind.conf .
+
+Edit the line require_membership_of  and add the SIDs of the group which needs access to this server by comma separated.
+
+Enable the Home directory on first login
+Enable oddjobd to create home directory automatically in the initial login with default permissions of 700
+
+# authconfig –enablemkhomedir –update
+
+Verify Your Access
+We have completed the AD integration in the server. now test your access with your AD id and password.
+
+eg: login -urid@domain and password – AD password.
