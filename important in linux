@@ -9,5 +9,32 @@ The skeleton directory is configured inside /etc/default/useradd:
 SKEL=/etc/skel
 You can add the config.sh file to this directory so that it is automatically added for all new users as part of their home directory.
 
-2. login/account related things in /var/log/secure. || Keep authentication logs for both successful or failed logins,
+3. login/account related things in /var/log/secure. || Keep authentication logs for both successful or failed logins,
 
+4. To online scan new LUNs, complete the following steps:
+
+Update the HBA driver by installing or updating the files sg3_utils-*.rpm and sg3_utils-libs-*.rpm to the latest version supplied in your Linux distribution.
+Ensure that DMMP is enabled.
+Ensure that the LUNS that need to be expanded are not mounted and are not used by applications.
+Run sh rescan-scsi-bus.sh -r.
+Run multipath -F.
+Run multipath.
+Run multipath -ll to view that LUN sizes are expanded successfully without a reboot.
+To online expand or shrink new LUNs, complete the following steps:
+
+Update the HBA driver by installing or updating the files sg3_utils-*.rpm and sg3_utils-libs-*.rpm to the latest version.
+Ensure that DMMP is enabled.
+Ensure that the LUNS that need to be expanded are not mounted and are not used by applications.
+Run sh rescan-scsi-bus.sh -r.
+Run multipath -F.
+Run multipath.
+Run multipath -ll to view that LUN sizes are expanded successfully without a reboot.
+
+LUN set offline
+On Intel based hosts running the Linux operating system, in response to errors, the kernel might permanently disable a LUN and log a message that states both device set offline and the specific device.
+Maximum file system size limits volume size
+For certain Linux kernels, the maximum file system size is less than the LUN maximum size supported by the system.
+Failover errors
+In certain cases, only the default settings load, and an error is generated in the log file.
+Block scheduler performance
+Some parameters might require adjustment to achieve optimal block scheduler performance.
