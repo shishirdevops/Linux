@@ -1,3 +1,4 @@
+boot log: dmesg ( file /var/log/dmesg.)
 The BIOS stage.
 The Boot loader stage.
 The Kernel stage.
