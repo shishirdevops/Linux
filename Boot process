@@ -1,0 +1,60 @@
+The BIOS stage.
+The Boot loader stage.
+The Kernel stage.
+
+
+BIOS Stage:
+POST=> CMOS(for boot device and sequence)
+
+NOTE: For a device to be bootable, it must have a MASTER BOOT RECORD (MBR), in its first / last sector (of HDD, depending on manufacturer), 
+which is known as the boot sector. You need to format a disk to add an MBR to its boot sector. SIZE OF MBR = 512 Bytes.( ONE CHUNK)
+Primary boot loader code(This is of 446 Bytes).
+Partition table (64 Bytes).
+Magic number(2 Bytes).
+
+BOOT Loader Stage:
+BIOS gives control back to CPU. Now CPU will load MBR
+
+The two most common boot loaders for LINUX are
+
+ LInux LOader (LILO), and
+Grand Unified Bootloader (GRUB).
+Most modern LINUX versions use GRUB rather than LILO.
+
+The GRUB process consists of three stages, known as Stage 1, Stage 1.5, and Stage 2. 
+After the bootloader is loaded, the CPU can access the disk and memory and reads from the configuration file stored in /boot/grub/grub.conf on the disk. 
+It creates a image of a temporary virtual file system, called the INITRD or initial ramdisk and mounts the INITRD image, and load the kernel. 
+GRUB specifies the partition on which a compressed kernel image and necessary modules and initrd are located.
+
+ Kernel Stage:
+ 
+ The kernel checks for new hardware and loads any required device drivers. 
+ Loading and unloading of kernel modules is done with the help of programs like insmod, and rmmod present in the initrd image. 
+ It then mounts the actual root file system as specified in grub.conf file and unmounts initrd image and frees up all the memory occupied by the disk image.
+
+ Finally it runs the init process.
+ The PID (Process ID) of init process is always 1. This process persists till the computer halts. 
+ It is responsible for the whole state of system. The settings for this process are stored in its configuration file, /etc/inittab, 
+ which is an initialization table which defines starting of system programs. 
+ The init process uses the parameters in the /etc/inittab file to load the rest of the system daemons.
+ 
+ /etc/rc0.d/ –Contain Start/Kill scripts which should be run in Runlevel 0
+
+/etc/rc1.d/ –Contain Start/Kill scripts which should be run in Runlevel 1
+
+/etc/rc2.d/ –Contain Start/Kill scripts which should be run in Runlevel 2
+
+/etc/rc3.d/ –Contain Start/Kill scripts which should be run in Runlevel 3
+
+/etc/rc4.d/ –Contain Start/Kill scripts which should be run in Runlevel 4
+
+/etc/rc5.d/ –Contain Start/Kill scripts which should be run in Runlevel 5
+
+/etc/rc6.d/ –Contain Start/Kill scripts which should be run in Runlevel 6
+
+Once the initialization process completes init process run one more file /etc/rc.local which are the last commands run in initialization process or even booting process. 
+Once everything is completed the control is given back to the kernel.
+
+User prompt:
+
+Once the Kernel get the control it start multiple instances of "getty" which waits for console logins which spawn one's user shell process and gives you user prompt to login.
