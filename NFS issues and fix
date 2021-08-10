@@ -1,0 +1,37 @@
+The use of nfsstat and nfsiostat to troubleshoot NFS performance issues can make your life easy.
+
+Issue 1:
+mount: mount to NFS server 'NFS-Server' failed: System Error: No route to host.
+
+showmount –e <NFS server IP > | grep –I  <clientIP>
+telnet <NFS server IP> 2049
+
+Error 2:
+mount_nfs: can't mount / from 1.2.3.4 onto /mnt: RPC prog. not avail
+Error: “mount clntudp_create: RPC: Port mapper failure – RPC: Unable to receive”
+
+The Linux NFS implementation requires that both the NFS service and the portmapper (RPC) service be running on both the client and the server. 
+# rpcinfo -p
+#systemctl status rpcbind
+
+Error 3: 
+Error: “NFS Stale File Handle”
+
+Any program which attempts to do further I/O on the deleted file will receive the “NFS Stale File Handle” error.
+To refresh the client’s state with that of the server you may do a lazy unmount the mount point and remount it
+# umount -l /mnt/mount_point
+or kill the process, which references the mounted file system:
+# fuser -k [mounted-filesystem].
+
+Error 4:
+Error: “Access Denied” or “Permission Denied”
+Check the export permissions for the NFS file system. You can do this from the client:
+
+# showmount -e server_name
+
+Error 5:
+Error: “rpc mount export: RPC: Timed out”
+
+Unable to access file system at [NFS SERVER]: rpc mount export: RPC: Timed out This is caused by DNS name resolution issue. NFS(RPC) needs reverse name resolution. 
+If NFS server or client cannot resolve their name, this error occurs.
+In case gets the error message, check DNS configuration and /etc/hosts configuration.
