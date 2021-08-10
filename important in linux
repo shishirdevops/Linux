@@ -31,10 +31,23 @@ Run multipath.
 Run multipath -ll to view that LUN sizes are expanded successfully without a reboot.
 
 LUN set offline
-On Intel based hosts running the Linux operating system, in response to errors, the kernel might permanently disable a LUN and log a message that states both device set offline and the specific device.
+On Intel based hosts running the Linux operating system, in response to errors, 
+the kernel might permanently disable a LUN and log a message that states both device set offline and the specific device.
 Maximum file system size limits volume size
 For certain Linux kernels, the maximum file system size is less than the LUN maximum size supported by the system.
 Failover errors
 In certain cases, only the default settings load, and an error is generated in the log file.
 Block scheduler performance
 Some parameters might require adjustment to achieve optimal block scheduler performance.
+
+4. journalctl is a command for viewing logs collected by systemd. The systemd-journald service is responsible for systemd’s log collection, 
+and it retrieves messages from the kernel, systemd services, and other sources.
+-b got boot || journalctl --list-boots ||  journalctl -b a09dce7b2c1c458d861d7d0f0a7c8c65
+-k option to show only kernel messages
+-u option to show logs for that service: (journalctl -u ssh)
+-o option to display your logs in that format. For example: journalctl -o json-pretty
+journald.conf control how large your logs' size can grow to when persisted on disk
+journalctl with the --vacuum-time option to remove archived journal files with dates older than the specified relative time. For example, the following command will remove journals older than one year:
+journalctl --vacuum-time=1years
+Run journalctl with the --vacuum-files option to remove archived journal files until the specified number of files remains. For example, the following command removes all but the 10 most recent journal files:
+journalctl --vacuum-files=10
