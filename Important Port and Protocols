@@ -1,0 +1,6 @@
+HTTP 80/TCP
+DNS 53/UDP & TCP (A DNS client uses a random port above 1023 for both UDP and TCP) (prefer: query UDP , serve TCP)
+SMTP 25/UDP & TCP (prefer TCP)
+ssh	22/UDP & tcp
+DHCP UDP (67 server, 68 client)
+FTP 20/21/TCP 
