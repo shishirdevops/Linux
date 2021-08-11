@@ -1,0 +1,59 @@
+why-is-df-hanging?
+
+1. see FS is local or NFS:
+#df -l
+
+2.df was hanging when trying to statfs the keybase filesystem:\
+$ strace df
+...   # many lines omitted for brevity
+statfs("/run/user/1000/keybase/kbfs", <--- hangs here
+^Cstrace: Process 17510 detached
+$ keybase logout
+$ df  # doesn't hang anymore
+...
+$ keybase login
+$ df  # still ok
+
+3. try unmount:
+umount -lf /your/mount/point
+
+4. try restart proc-sys-fs-binfmt_misc:
+systemctl restart proc-sys-fs-binfmt_misc.mount
+##########################################################
+
+journaling in FS:
+A journaling file system is a file system that keeps track of changes not yet committed to the file system's main part by recording the goal 
+of such changes in a data structure known as a "journal", which is usually a circular log.
+
+XFS supports metadata journaling, which facilitates quicker crash recovery.
+
+##########################################################
+SAR(collects and displays ALL system activities statistics.):
+/var/log/sa/saXX
+
+##########################################################
+strace:
+It is a diagnostic, debugging and instructional userspace utility for Linux. 
+
+##########################################################
+sosreport:
+This command is a tool that collects configuration and diagnostic information from a Red Hat Enterprise Linux system.
+
+##########################################################
+traceroute:
+uses the TCP/IP suite of protocols, and sends User Datagram Protocol packets. The header contains the Time to Live (TTL) field
+It is used to monitor and tamper with interactions between processes and the Linux kernel, which include system calls, signal deliveries, and changes of process state.
+
+##########################################################
+tcpdump:
+
+By default tcpdump, captures only the packet headers. However, sometimes you may need to inspect the content of the packets.
+$sudo tcpdump -n -A
+
+-A option tells tcpdump to print each packet in ASCII
+-n option to disable the translation || By default, tcpdump performs reverse DNS resolution on IP addresses and translates port numbers into names
+
+Understanding the tcpdump Output:
+[Timestamp] [Protocol] [Src IP].[Src Port] > [Dst IP].[Dst Port]: [Flags], [Seq], [Ack], [Win Size], [Options], [Data Length]
+
+##########################################################
