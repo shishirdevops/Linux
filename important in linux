@@ -1,3 +1,23 @@
+0. Orphan Process:
+ technically the orphan process has the init process as its parent, it is still called an orphan process since the process that originally created it no longer exists.
+ Unintentional Orphan: where in coordination with the user’s shell will try to terminate all the child processes with the SIGHUP process signal, 
+ rather than letting them continue to run as orphans.
+ Intentional Orphan: 
+ it becomes detached from the user’s session and left running in the background; usually to allow a long-running job to complete without further user attention, 
+ or to start an indefinitely running service.
+
+Zombie(defunct): A zombie process (or defunct process) is a process that has completed execution but hasn’t been reaped by its parent process. 
+As result it holds a process entry and the PID in the process table.
+$ ps -axf -o pid,ppid,tty,stat,cmd
+- `D` uninterruptible sleep (usually IO)
+- `R` running or runnable (on run queue)
+- `S` interruptible sleep (waiting for an event to complete)
+- `T` stopped by job control signal
+- `t` stopped by debugger during the tracing
+- `W` paging (not valid since the 2.6.xx kernel)
+- `X` dead (should never be seen)
+- `Z` defunct ("zombie") process, terminated but not reaped by its parent
+
 1. umask (/etc/profile)
 Linux uses the following default mask and permission values: The system default permission values are 777 ( rwxrwxrwx ) for folders and 666 ( rw-rw-rw- ) for files. 
 The default mask for a non-root user is 002, changing the folder permissions to 775 ( rwxrwxr-x ), and file permissions to 664 ( rw-rw-r-- ).
