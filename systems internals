@@ -1,2 +1,17 @@
 https://www.youtube.com/watch?v=sL7h1rOn0K0
 What happens internally when we type a command in the shell 
+
+enter command in terminal => goes to shell
+shell does main 3 things:
+
+1: parsing
+breaks command in token , check shell expension (e.g. * etc), shell will check for alias, check if command built-in to shell, 
+find of path of executable, search path define in $PATH
+2: execute program: (/usr/bin/ls)
+fork ()=> exec()=> wait()=>
+||                    ^^
+||===================+||
+
+3. Dynamic Loading:
+About Libareries (You can use strace/ltrace to see) 
+and then it goes on.
