@@ -71,3 +71,11 @@ journalctl with the --vacuum-time option to remove archived journal files with d
 journalctl --vacuum-time=1years
 Run journalctl with the --vacuum-files option to remove archived journal files until the specified number of files remains. For example, the following command removes all but the 10 most recent journal files:
 journalctl --vacuum-files=10
+
+5. In "single-user mode", your computer boots to runlevel 1. Your local file systems are mounted, but your network is not activated.
+You have a usable system maintenance shell. Unlike "rescue mode", single-user mode automatically tries to mount your file system. 
+Do not use single-user mode if your file system cannot be mounted successfully. You cannot use single-user mode if the runlevel 1 configuration on your system is corrupted.
+
+In emergency mode, you are booted into the most minimal environment possible. The root file system is mounted read-only and almost nothing is set up. 
+The main advantage of emergency mode over single-user mode is that the init files are not loaded. 
+If init is corrupted or not working, you can still mount file systems to recover data that could be lost during a re-installation.
