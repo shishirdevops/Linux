@@ -12,6 +12,6 @@ fork ()=> exec()=> wait()=>
 ||                    ^^
 ||===================+||
 
-3. Dynamic Loading:
+3. Dynamic Loading (in virtual memory):
 About Libareries (You can use strace/ltrace to see) 
 and then it goes on.
