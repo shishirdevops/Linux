@@ -1,0 +1,87 @@
+Run Levels:
+RHEL 7/8:
+runlevel0.target -> poweroff.target
+runlevel1.target -> rescue.target
+runlevel2.target -> multi-user.target
+runlevel3.target -> multi-user.target
+runlevel4.target -> multi-user.target
+runlevel5.target -> graphical.target
+runlevel6.target -> reboot.target
+
+RHEL 6:
+runlevel 0
+runlevel 1
+runlevel 2
+runlevel 3
+runlevel 4
+runlevel 5
+runlevel 6
+
+RHEL 7/8 || 6 :
+To view runlevel/target:	
+systemctl get-default || runlevel
+
+To change runlevel/target:
+systemctl isolate [Name.target] || init [runlevel]
+
+To configure default runlevel/target:	
+systemctl set-default [Name.target] || /etc/inittab
+
+To break root password or Boot into single user mode:	
+Append rd.break or init=/bin/bash to kernel cmdline || Append 1 or s or init=/bin/bash to kernel cmdline
+
+Network Time Synchronization:
+It supports Chrony and ntp (in RHEL 8 only Chrony) || ntp
+
+To view ports/sockets:
+ss, lsof || netstat, ss and lsof
+
+Default Firewall	
+8: Firewalld, it uses nftables framework in the backend || 7: Firewalld, it uses Iptables framework in the backend	|| 6: Iptables
+
+Default File System:
+XFS/XFS ||	EXT4
+
+File System Check:	
+xfs_repair/xfs_repair ||	e2fsck
+
+File System Extend: 
+xfs_growfs (This doesn’t allow you to reduce a filesystem)	|| resize2fs
+
+Network Interface Name:
+enpXXX (enp0s3)	|| eth0
+
+Host Name Change:
+/etc/hostname	|| /etc/sysconfig/network 
+
+Package Management:
+By default both are installed, YUM symbolic link to DNF (8) ||	By default only YUM and DNF can be installed from the Extra repo (7)	|| Only YUM (6)
+
+Logging:
+rsyslog and journal	|| Only rsyslog (6)
+
+Is the upgrade possible?	
+Yes	|| RHEL 7.7 to RHEL 8 | RHEL 6.10 to RHEL 7.7
+
+Virtual Machines Management:
+cockpit	|| virt-manager	|| virt-manager
+
+Minimum required disk space:
+10GB minimum, 20GB recommended ||	1GB minimum, 5GB recommended
+
+ISO Image:
+Only 64-Bit|| 32-Bit and 64-Bit
+
+Mount Options Change:
+By default user_xattr and acl mount options are enabled	||Need to enable them 
+
+Max Supported (Individual) File & Filesystem Size:	
+XFS= 500TB XFS= 1024TB	 (8)
+XFS= 500TB XFS= 500TB	   (7)
+EXT4= 16TB EXT4= 16TB    (6)
+
+Max. RAM Supported:
+24 TB on x86_64 architecture ||	12 TB on x86_64 architecture || 12 TB on x86_64 architecture
+
+Directories Change:	
+Directories /bin, /sbin, /lib and /lib64 are now all under the /usr directory	|| All these under the /usr directory	|| All these under the / directory
