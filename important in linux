@@ -79,3 +79,25 @@ Do not use single-user mode if your file system cannot be mounted successfully. 
 In emergency mode, you are booted into the most minimal environment possible. The root file system is mounted read-only and almost nothing is set up. 
 The main advantage of emergency mode over single-user mode is that the init files are not loaded. 
 If init is corrupted or not working, you can still mount file systems to recover data that could be lost during a re-installation.
+
+How to Single user mode: at grub stage when you get list of kernel select the one hit 'e', go to line with ro, tyen replae ro with rw init=/sysroot/bin/sh, then ctrl+x.
+then #chroot /sysroot.
+here you are!! you can reset root passsord even.
+
+within RHEL 7/8 rescue mode is referred to as "Anaconda Rescue Mode"
+
+(rhel 7)How to emergency mode: at grub stage when you get list of kernel select the one hit 'e', go to line with linux 16 type
+before rhgb systemd.unit=rescue.target(emergency.target for emergency), then ctrl+x.
+(rhel 7)How to emergency mode: at grub stage when you get list of kernel select the one hit 'e', go to line with linux 16 type
+before rhgb systemd.unit=emergency.target(emergency.target for emergency), then ctrl+x. || You can also run sysctl rescue on emergency prompt.
+
+
+RESET ROOT PASSWORD(7/8):
+
+ go to kernel click 'e', locate that begins with kernel= and append the parameter rd.break and press Ctrl + x,
+ # mount | grep sysroot (you can see sysroot in RO)
+ # mount -o remount,rw /sysroot/
+ # chroot /sysroot
+ # passwd
+ # touch /.autorelabel (enable file system relabelling)
+ # exit
