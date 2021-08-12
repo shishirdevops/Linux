@@ -57,3 +57,41 @@ Understanding the tcpdump Output:
 [Timestamp] [Protocol] [Src IP].[Src Port] > [Dst IP].[Dst Port]: [Flags], [Seq], [Ack], [Win Size], [Options], [Data Length]
 
 ##########################################################
+
+
+1) Identify the zombie processes
+top -b1 -n1 | grep Z
+
+2) Find the parent of zombie processes
+ps -A -ostat,ppid | grep -e '[zZ]'| awk '{ print $2 }' | uniq | xargs ps -p
+
+3) Send SIGCHLD signal to the parent process. This signal tells the parent process to execute the wait() system call and clean up its zombie children
+kill -s SIGCHLD ppid
+
+4) Identify if the zombie processes have been killed
+top -b1 -n1 | grep Z
+
+If there are still zombie processes then the parent process isn't programmed properly and is ignoring SIGCHLD signals.
+You'll have to kill or close the zombies' parent process.
+You'll have to kill or close the zombies' parent process. (Step 5)
+init periodically executes the wait() system call to clean up its zombie children, so init will make short work of the zombies.
+
+5) Kill the parent process
+kill -9 ppid
+
+===> Required Services for NFS:
+nfs
+nfslock
+portmap 
+mapd
+
+===> process is running or not?
+pgrep nginx || ps -C httpd || ps aux | egrep -i "(nginx|httpd)"
+
+===> lvmstat command to detect whether certain areas or partitions of a logical volume are accessed more frequently than others.
+
+===> initrd (fix)|| mkinitrd || grub2-mkconfig -o /boot/grub2/grub.cfg
+
+===> grub (fix)|| boot from dick => select rescue => select keyboard , language and continue to search existing root , it will be mounted /mnt/sysimage. then do "chroot /mnt/sysimage"
+get shell 
+then grub-install /dev/sda .
