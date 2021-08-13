@@ -92,7 +92,7 @@ pgrep nginx || ps -C httpd || ps aux | egrep -i "(nginx|httpd)"
 
 ===> initrd (fix)|| mkinitrd || grub2-mkconfig -o /boot/grub2/grub.cfg
 
-===> grub (fix)|| boot from dick => select rescue => select keyboard , language and continue to search existing root , it will be mounted /mnt/sysimage. then do "chroot /mnt/sysimage"
+===> grub (fix)|| boot from disk => select rescue => select keyboard , language and continue to search existing root , it will be mounted /mnt/sysimage. then do "chroot /mnt/sysimage"
 get shell 
 then grub-install /dev/sda .
 exit
